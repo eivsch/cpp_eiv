@@ -49,7 +49,7 @@ int highest_legal_value_of_hand(vector<card> hand){
 
 void bet(){
 	int input_bet{0};
-	cout << "Enter bet: " << endl;
+	cout << "Enter bet: ";
 	cin >> input_bet;
 	if(cin.fail()) throw invalid_argument("Wrong input type!");
 	if(input_bet > cash){
@@ -61,7 +61,6 @@ void bet(){
 	}
 	cash -= input_bet;
 	total_bet += input_bet;
-	cout << "Bet totalling: " << total_bet << endl;
 	cout << "Remaining cash: " << cash << endl;
 }
 // Takes card_deck pointer as argument in case of multiple card decks
@@ -104,11 +103,42 @@ bool values_and_comp(vector<card> hand, int v){
 	return false;
 }
 
+string decide_round(vector<card> player, vector<card> dealer){
+	string s{""};
+	if(highest_legal_value_of_hand(dealer) < 
+	   highest_legal_value_of_hand(player)){
+		s = "You won this round! Your reward is: ";
+	} else if(highest_legal_value_of_hand(dealer) >
+			  highest_legal_value_of_hand(player)){
+	 	s = "You lost...";
+	} else{ 
+		s = "Equal hands!";
+	}
+	return s;
+}
+
+bool continue_game(string message){
+	cout << message << endl;
+	string s;
+	cin.ignore();
+	getline(cin,s);
+	if(s == "quit") return false;
+	else if(s.empty()) return true;
+}
+
+/*
+void print_current_result(vector<card> player, vector<card> dealer){
+	cout << "You: "; print_hand(player); 
+	cout << "Dealer: "; print_hand(dealer);
+}
+*/
+
 int main(){
 	vector<card> player_hand;
 	vector<card> dealer_hand;
 
-	cout << "Welcome to Blackjack Quest!" << endl;
+	cout << "\nWelcome to Blackjack Quest!\n" << endl;
+	//game logic
 	while(cash > 0){
 		card_deck cd{};
 		bet();
@@ -117,56 +147,57 @@ int main(){
 		deal_cards(&cd, &player_hand, 2);
 		deal_cards(&cd, &dealer_hand, 2);
 
-		while(true) {
-			string user_input{""};
-			print_hand(player_hand); print_dealerhand(dealer_hand);
+		continue_game("Press <enter> to hand out cards.");
+		
+		cout << "You: "; print_hand(player_hand); 
+		cout << "Dealer: "; print_dealerhand(dealer_hand);
 
-			if(values_or_comp(player_hand,21)){
-				cout << "Blackjack!" << endl;
-				break;
-			}
+		if(values_or_comp(player_hand,21)) cout << "Blackjack!" << endl;
+		else{
+			while(true) {
+				string user_input{""};
 
-			if(values_and_comp(player_hand, 21)){
-				cout << "You bust out!" << endl;
-				break;
-			}
+				if(highest_legal_value_of_hand(player_hand) == 21){
+					cout << "You got 21!" << endl;
+					break;
+				}
 
-			bool dealer_done = false;
+				if(values_and_comp(player_hand, 21)){
+					break;
+				}
+
+				bool dealer_done = false;
 			
-			cout << "Type 'hit' or 'stand'" << endl;
-			cin >> user_input;
-			if(user_input == "hit"){
-				deal_cards(&cd, &player_hand, 1);
-			}else if(user_input == "stand"){
-				// dealer plays
-				while(true){
-					// dealer must hit below 17
- 					if(!(values_or_comp(dealer_hand, 17))){
- 						cout << "here" << endl;
- 						deal_cards(&cd, &dealer_hand, 1);
- 					} else{
- 						dealer_done = true;
- 						break;
- 					}
- 				}				
+				cout << "Type 'hit' or 'stand'" << endl;
+				cin >> user_input;
+				if(user_input == "hit"){
+					deal_cards(&cd, &player_hand, 1);
+					cout << "You: "; print_hand(player_hand); 
+					cout << "Dealer: "; print_dealerhand(dealer_hand);
+				}else if(user_input == "stand"){
+					// dealer plays after showing hidden card
+					while(true){
+						cout << "Dealer:"; print_hand(dealer_hand);
+						// dealer must hit below 17
+ 						if(!(values_and_comp(dealer_hand, 16))){
+ 							deal_cards(&cd, &dealer_hand, 1);
+ 						} else{
+ 							dealer_done = true;
+ 							break;
+ 						}
+ 					}				
+				}
+				if(dealer_done) break;
 			}
-			if(dealer_done) break;
 		}
 
-		print_hand(player_hand); print_hand(dealer_hand);
-
-		cout << "Dealer: " << highest_legal_value_of_hand(dealer_hand) << endl;
-		cout << "You: " << highest_legal_value_of_hand(player_hand)<<endl;	
-		
-		if(highest_legal_value_of_hand(dealer_hand) < 
-		   highest_legal_value_of_hand(player_hand)){
-			cout << "You won this round!" << endl;
-		} else if(highest_legal_value_of_hand(dealer_hand) >
-				  highest_legal_value_of_hand(player_hand)){
-			cout << "You lost!" << endl;
-		} else cout << "Equal hands" << endl;
+		cout << decide_round(player_hand, dealer_hand) << endl;
 		
 		total_bet = 0;
 		player_hand.clear(); dealer_hand.clear();
+		if(!continue_game("Hit <enter> for a new round ('quit' to quit playing).")){
+			break;
+		}
 	}
+	cout << "\nFarewell, hope you enjoyed Blackjack Quest!\n" << endl;
 }
