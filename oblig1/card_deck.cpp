@@ -1,4 +1,5 @@
 #include "card_deck.hpp"
+#include <stdexcept>
 #include <stdlib.h>
 
 using namespace std;
@@ -29,7 +30,6 @@ void card_deck::shuffle(){
 	int rnd1, rnd2;
 	int i{0};
 	while(i++ < 1000){
-		// casting .size() as it should never be bigger than 52
 		rnd1=rand()%(int)deck.size(); 
 		rnd2=rand()%(int)deck.size();
 		card temp_card = deck[rnd1];
@@ -43,7 +43,7 @@ card card_deck::pull_card(){
 		card temp_card = deck.back();
 		deck.pop_back();
 		return temp_card;
-	} // unntakshåndtering HER!!!! throw new runtime_error...
+	} else throw runtime_error("Can't pull from empty card deck!");
 }
 
 int card_deck::cards_remaining(){

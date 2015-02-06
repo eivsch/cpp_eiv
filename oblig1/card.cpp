@@ -24,5 +24,19 @@ void card::set_value(int v){
 
 string card::to_string(){
 	string s{type};
-	return s + std::to_string(value);
+	switch(type){
+		case 'H':
+			s="♠";
+			break;
+		case 'S':
+			s="♥";
+			break;
+		case 'D':
+			s="♦";
+			break;
+		case 'C':
+			s="♣";
+			break;
+	}
+	return s + std::to_string(value) + s;
 }

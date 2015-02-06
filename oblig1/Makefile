@@ -6,10 +6,14 @@ OBJ=oppvarming blackjack
 all: $(OBJ)
 
 oppvarming:
-	$(GPP) $(GPPOPT) oppvarming.cpp -o $@
+	$(GPP) $(GPPOPT) oppvarming.cpp -o oppvarming
 
-blackjack:
-	$(GPP) $(GPPOPT) blackjack.cpp -o $@
+blackjack: classes
+	$(GPP) $(GPPOPT) blackjack.cpp card.o card_deck.o -o blackjack
+
+classes:
+	$(GPP) $(GPPOPT) -c card.cpp
+	$(GPP) $(GPPOPT) -c card_deck.cpp
 
 
 clean: 

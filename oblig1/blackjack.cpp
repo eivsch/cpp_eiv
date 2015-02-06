@@ -1,15 +1,12 @@
 #include <iostream>
 #include <stdexcept>
+#include <unistd.h>
 #include "card_deck.hpp"
 
 using namespace std;
 
 const string DEALER = "DEALER";
 const string PLAYER = "PLAYER";
-
-int cash{1500};
-int total_bet{0};
-
 
 vector<int> value_of_hand(vector<card> hand){
 	vector<int> vsum{0,0};
@@ -47,21 +44,25 @@ int highest_legal_value_of_hand(vector<card> hand){
 }
 
 
-void bet(){
+void bet(int *cash, int *total_bet){
 	int input_bet{0};
 	cout << "Enter bet: ";
+	
 	cin >> input_bet;
-	if(cin.fail()) throw invalid_argument("Wrong input type!");
-	if(input_bet > cash){
+	
+	if(cin.fail()) throw invalid_argument("Wrong input!");
+	if(input_bet > *cash){
 		cout << "Not enough cash!" << endl;
-		bet();
 	}
 	if(input_bet < 0){
 		cout << "Positive number!" << endl;
+		cin.ignore();
+		cin.clear();
+		bet(cash,total_bet);
 	}
-	cash -= input_bet;
-	total_bet += input_bet;
-	cout << "Remaining cash: " << cash << endl;
+	*cash -= input_bet;
+	*total_bet += input_bet;
+	cout << "Remaining cash: " << *cash << endl;
 }
 // Takes card_deck pointer as argument in case of multiple card decks
 void deal_cards(card_deck *cd, vector<card> *hand, int n){
@@ -72,7 +73,7 @@ void deal_cards(card_deck *cd, vector<card> *hand, int n){
 void print_hand(vector<card> hand){	
 	for(vector<card>::const_iterator it = hand.begin(); it != hand.end(); it++){
 		card c = *it;
-		cout << c.get_type() << c.get_value() << " ";
+		cout << c.to_string() << " ";
 	}
 	
 	int v = highest_legal_value_of_hand(hand);
@@ -89,13 +90,6 @@ void print_dealerhand(vector<card> hand){
 	else if(v == 14) v = 11;
 	cout << hand[0].to_string() << "\t\t " << to_string(v) << endl;
 }
-
-bool values_or_comp(vector<card> hand, int v){
-	if(value_of_hand(hand)[0] > v || 
-	   value_of_hand(hand)[1] > v) return true;
-
-	return false;
-}
 bool values_and_comp(vector<card> hand, int v){
 	if(value_of_hand(hand)[0] > v && 
 	   value_of_hand(hand)[1] > v) return true;
@@ -107,10 +101,10 @@ string decide_round(vector<card> player, vector<card> dealer){
 	string s{""};
 	if(highest_legal_value_of_hand(dealer) < 
 	   highest_legal_value_of_hand(player)){
-		s = "You won this round! Your reward is: ";
+		s = "\nYou won this round! Please collect you reward: ";
 	} else if(highest_legal_value_of_hand(dealer) >
 			  highest_legal_value_of_hand(player)){
-	 	s = "You lost...";
+	 	s = "\nYou lost...";
 	} else{ 
 		s = "Equal hands!";
 	}
@@ -134,15 +128,18 @@ void print_current_result(vector<card> player, vector<card> dealer){
 */
 
 int main(){
+	int cash{1500}, total_bet{0}, count{1};
 	vector<card> player_hand;
 	vector<card> dealer_hand;
 
 	cout << "\nWelcome to Blackjack Quest!\n" << endl;
 	//game logic
 	while(cash > 0){
+		if(count%10 == 0) 
+			cout << "Your blackjack skill just increased to " + count/10 << endl;
 		card_deck cd{};
-		bet();
-
+		bet(&cash, &total_bet);
+		
 		// initial hand out
 		deal_cards(&cd, &player_hand, 2);
 		deal_cards(&cd, &dealer_hand, 2);
@@ -152,7 +149,9 @@ int main(){
 		cout << "You: "; print_hand(player_hand); 
 		cout << "Dealer: "; print_dealerhand(dealer_hand);
 
-		if(values_or_comp(player_hand,21)) cout << "Blackjack!" << endl;
+		if(value_of_hand(player_hand)[0] == 21 || 
+	       value_of_hand(player_hand)[1] == 21 ) 
+			cout << "Blackjack!" << endl;
 		else{
 			while(true) {
 				string user_input{""};
@@ -168,19 +167,21 @@ int main(){
 
 				bool dealer_done = false;
 			
-				cout << "Type 'hit' or 'stand'" << endl;
+				cout << "\nType 'hit' or 'stand': ";
 				cin >> user_input;
 				if(user_input == "hit"){
 					deal_cards(&cd, &player_hand, 1);
-					cout << "You: "; print_hand(player_hand); 
+					cout << "\nYou: "; print_hand(player_hand); 
 					cout << "Dealer: "; print_dealerhand(dealer_hand);
 				}else if(user_input == "stand"){
+					cout << "\n";
 					// dealer plays after showing hidden card
 					while(true){
-						cout << "Dealer:"; print_hand(dealer_hand);
+						cout << "Dealer: "; print_hand(dealer_hand);
 						// dealer must hit below 17
  						if(!(values_and_comp(dealer_hand, 16))){
  							deal_cards(&cd, &dealer_hand, 1);
+ 							sleep(1);
  						} else{
  							dealer_done = true;
  							break;
@@ -190,14 +191,15 @@ int main(){
 				if(dealer_done) break;
 			}
 		}
-
+		sleep(2);
 		cout << decide_round(player_hand, dealer_hand) << endl;
 		
 		total_bet = 0;
 		player_hand.clear(); dealer_hand.clear();
-		if(!continue_game("Hit <enter> for a new round ('quit' to quit playing).")){
+		if(!continue_game("\nPress <enter> for a new round ('quit' to quit playing).")){
 			break;
 		}
+		count++;
 	}
 	cout << "\nFarewell, hope you enjoyed Blackjack Quest!\n" << endl;
 }
