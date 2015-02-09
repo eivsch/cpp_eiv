@@ -5,9 +5,6 @@
 
 using namespace std;
 
-const string DEALER = "DEALER";
-const string PLAYER = "PLAYER";
-
 vector<int> value_of_hand(vector<card> hand){
 	vector<int> vsum{0,0};
 	for(vector<card>::const_iterator it = hand.begin(); it != hand.end(); it++){
@@ -44,22 +41,15 @@ int highest_legal_value_of_hand(vector<card> hand){
 }
 
 
-void bet(int *cash, int *total_bet){
+void bet(int* cash, int* total_bet){
 	int input_bet{0};
-	cout << "Enter bet: ";
-	
+	cout << "Enter bet: ";	
 	cin >> input_bet;
 	
-	if(cin.fail()) throw invalid_argument("Wrong input!");
-	if(input_bet > *cash){
-		cout << "Not enough cash!" << endl;
-	}
-	if(input_bet < 0){
-		cout << "Positive number!" << endl;
-		cin.ignore();
-		cin.clear();
-		bet(cash,total_bet);
-	}
+	if(cin.fail()) throw invalid_argument("Bad input!");
+	if(input_bet > *cash) throw invalid_argument("Not enough cash!");
+	if(input_bet < 0) throw invalid_argument("Bet must be a positive integer!");
+	
 	*cash -= input_bet;
 	*total_bet += input_bet;
 	cout << "Remaining cash: " << *cash << endl;
@@ -97,15 +87,25 @@ bool values_and_comp(vector<card> hand, int v){
 	return false;
 }
 
-string decide_round(vector<card> player, vector<card> dealer){
+string decide_round_pay_out(vector<card> player, vector<card> dealer, int* cash, int* total_bet){
 	string s{""};
+	int payout{0};
+	// blackjack
+	if(player.size()==2 && highest_legal_value_of_hand(player) == 21){
+		payout = *total_bet*(double)2.5;
+		*cash += payout;
+		s = "\nYou won this round! Please collect you reward: " + to_string(payout) + " gold!";
+	}
 	if(highest_legal_value_of_hand(dealer) < 
 	   highest_legal_value_of_hand(player)){
-		s = "\nYou won this round! Please collect you reward: ";
+	   	payout = *total_bet*2;
+	   	*cash += payout;
+		s = "\nYou won this round! Please collect you reward: " + to_string(payout) + " gold!";
 	} else if(highest_legal_value_of_hand(dealer) >
 			  highest_legal_value_of_hand(player)){
 	 	s = "\nYou lost...";
-	} else{ 
+	} else{
+		*cash += *total_bet; 
 		s = "Equal hands!";
 	}
 	return s;
@@ -120,25 +120,26 @@ bool continue_game(string message){
 	else if(s.empty()) return true;
 }
 
-/*
-void print_current_result(vector<card> player, vector<card> dealer){
-	cout << "You: "; print_hand(player); 
-	cout << "Dealer: "; print_hand(dealer);
+bool out_of_cash(int* cash){
+	return *cash < 1;
 }
-*/
+
 
 int main(){
-	int cash{1500}, total_bet{0}, count{1};
+	int cash{1500}, total_bet{0};
 	vector<card> player_hand;
 	vector<card> dealer_hand;
 
 	cout << "\nWelcome to Blackjack Quest!\n" << endl;
 	//game logic
-	while(cash > 0){
-		if(count%10 == 0) 
-			cout << "Your blackjack skill just increased to " + count/10 << endl;
+	while(!out_of_cash(&cash)){
 		card_deck cd{};
-		bet(&cash, &total_bet);
+		try{
+			bet(&cash, &total_bet);
+		}catch(invalid_argument ia){
+			cout << "Error: " << ia.what();
+			break;
+		}
 		
 		// initial hand out
 		deal_cards(&cd, &player_hand, 2);
@@ -146,7 +147,7 @@ int main(){
 
 		continue_game("Press <enter> to hand out cards.");
 		
-		cout << "You: "; print_hand(player_hand); 
+		cout << "You: "; print_hand(player_hand);
 		cout << "Dealer: "; print_dealerhand(dealer_hand);
 
 		if(value_of_hand(player_hand)[0] == 21 || 
@@ -155,22 +156,17 @@ int main(){
 		else{
 			while(true) {
 				string user_input{""};
-
-				if(highest_legal_value_of_hand(player_hand) == 21){
-					cout << "You got 21!" << endl;
-					break;
-				}
+				bool dealer_done = false;
 
 				if(values_and_comp(player_hand, 21)){
 					break;
 				}
-
-				bool dealer_done = false;
 			
 				cout << "\nType 'hit' or 'stand': ";
 				cin >> user_input;
 				if(user_input == "hit"){
 					deal_cards(&cd, &player_hand, 1);
+					sleep(1);
 					cout << "\nYou: "; print_hand(player_hand); 
 					cout << "Dealer: "; print_dealerhand(dealer_hand);
 				}else if(user_input == "stand"){
@@ -192,14 +188,14 @@ int main(){
 			}
 		}
 		sleep(2);
-		cout << decide_round(player_hand, dealer_hand) << endl;
+		cout << decide_round_pay_out(player_hand, dealer_hand, &cash, &total_bet) << endl;
 		
 		total_bet = 0;
 		player_hand.clear(); dealer_hand.clear();
 		if(!continue_game("\nPress <enter> for a new round ('quit' to quit playing).")){
 			break;
 		}
-		count++;
 	}
-	cout << "\nFarewell, hope you enjoyed Blackjack Quest!\n" << endl;
+	if(out_of_cash) cout << "\nToo bad, no more money. Try improving your luck!\n" << endl;
+	else cout << "\nFarewell!\n" << endl;
 }
