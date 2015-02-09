@@ -106,7 +106,7 @@ string decide_round_pay_out(vector<card> player, vector<card> dealer, int* cash,
 	 	s = "\nYou lost...";
 	} else{
 		*cash += *total_bet; 
-		s = "Equal hands!";
+		s = "Push!";
 	}
 	return s;
 }
@@ -123,7 +123,6 @@ bool continue_game(string message){
 bool out_of_cash(int* cash){
 	return *cash < 1;
 }
-
 
 int main(){
 	int cash{1500}, total_bet{0};
@@ -196,6 +195,7 @@ int main(){
 			break;
 		}
 	}
-	if(out_of_cash) cout << "\nToo bad, no more money. Try improving your luck!\n" << endl;
+	if(out_of_cash) cout << "\nToo bad, no more gold left...\n" << endl;
 	else cout << "\nFarewell!\n" << endl;
+	return 0;
 }
