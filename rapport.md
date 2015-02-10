@@ -7,9 +7,8 @@ det inn i fingrene, da jeg kom ganske sent til kurset og ikke hadde rukket å se
 Programmet er ganske enkelt. Det er klassen card som definerer et spillekort (verdi og type), og klassen card_deck som da inneholder kort, med funksjoner
 for å stokke, dele ut OSV. Resten ligger i fila blackjack.cpp, altså selve spilllogikken, I/O med bruker og funksjoner for å regne ut poengsummer og
 gevinster. All spillogikken ligger i main-metoden, hovedsaklig i to while-løkker. Fokuset var kun på å få spillet til å kjøre godt i terminal her og nå, 
-at det ser ryddig ut og er lett og forstå for bruker. Det er riktignok endel svakheter når det gjelder unntakshåndtering, som gjør at programmet fort 
-oppfører seg unaturlig spesielt hvis bruker gir ugyldig input når innsats oppgis. All brukerinput skjer via *cin* og det skapte endel problemer 
-programmeringsmessig som jeg ikke helt klarte/fikk tid til å løse. I tillegg bidrar nok selve programdesignen til at det blir vanskeligere.
+at det ser ryddig ut og er lett og forstå for bruker. Fikk egentlig mest utfordringer knyttet til I/O med bruker. All brukerinput skjer via *cin* og det skapte endel problemer 
+programmeringsmessig som var vanskelig å finne enkle løsninger på. I tillegg bidrar nok selve programdesignen til at det blir vanskeligere.
 
 ##Alternativt Design
 Kunne objektorientert mer, f.eks hatt en egen klasse for brukerinteraksjonen for å få skilt det litt mer fra resten og dermed enklere kunne lagt til
