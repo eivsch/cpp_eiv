@@ -106,7 +106,7 @@ string decide_round_pay_out(vector<card> player, vector<card> dealer, int* cash,
 	 	s = "\nYou lost...";
 	} else{
 		*cash += *total_bet; 
-		s = "Push!";
+		s = "\nPush!";
 	}
 	return s;
 }
@@ -125,7 +125,7 @@ bool out_of_cash(int* cash){
 }
 
 int main(){
-	int cash{1500}, total_bet{0};
+	int cash{1000}, total_bet{0};
 	vector<card> player_hand;
 	vector<card> dealer_hand;
 
@@ -157,6 +157,7 @@ int main(){
 				string user_input{""};
 				bool dealer_done = false;
 
+				// check if player busts
 				if(values_and_comp(player_hand, 21)){
 					break;
 				}
@@ -170,8 +171,8 @@ int main(){
 					cout << "Dealer: "; print_dealerhand(dealer_hand);
 				}else if(user_input == "stand"){
 					cout << "\n";
-					// dealer plays after showing hidden card
 					while(true){
+						// dealer plays after showing hidden card
 						cout << "Dealer: "; print_hand(dealer_hand);
 						// dealer must hit below 17
  						if(!(values_and_comp(dealer_hand, 16))){
@@ -195,7 +196,7 @@ int main(){
 			break;
 		}
 	}
-	if(out_of_cash) cout << "\nToo bad, no more gold left...\n" << endl;
-	else cout << "\nFarewell!\n" << endl;
+	if(out_of_cash(&cash)) cout << "\nToo bad, no more gold left...\n" << endl;
+	else cout << "\nFarewell, hope you enjoyed Blackjack Quest!\n" << endl;
 	return 0;
 }
