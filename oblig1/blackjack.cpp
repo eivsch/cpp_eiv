@@ -46,10 +46,17 @@ void bet(int* cash, int* total_bet){
 	cout << "Enter bet: ";	
 	cin >> input_bet;
 	
-	if(cin.fail()) throw invalid_argument("Bad input!");
-	if(input_bet > *cash) throw invalid_argument("Not enough cash!");
-	if(input_bet < 0) throw invalid_argument("Bet must be a positive integer!");
+	while(input_bet <= 0 || input_bet > *cash || !cin){
+		cin.clear();
+
+		if(input_bet > *cash) cout << "Not enough gold!" << endl;
+		else cout << "Positive integer, larger than 0!" << endl;
 	
+		while(cin.get() != '\n') continue;
+
+		cout << "Enter bet: ";
+		cin >> input_bet;
+	}
 	*cash -= input_bet;
 	*total_bet += input_bet;
 	cout << "Remaining cash: " << *cash << endl;
@@ -133,12 +140,7 @@ int main(){
 	//game logic
 	while(!out_of_cash(&cash)){
 		card_deck cd{};
-		try{
-			bet(&cash, &total_bet);
-		}catch(invalid_argument ia){
-			cout << "Error: " << ia.what();
-			break;
-		}
+		bet(&cash, &total_bet);
 		
 		// initial hand out
 		deal_cards(&cd, &player_hand, 2);
