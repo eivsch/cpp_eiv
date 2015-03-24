@@ -20,5 +20,5 @@ void is_vector::increment_position(){
 	y_+=speed_*(sin (direction_));
 }
 void is_vector::reset(){
-	x_=x_orig_; y=y_orig_;
+	x_=x_orig_; y_=y_orig_;
 }
