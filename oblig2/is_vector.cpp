@@ -7,8 +7,7 @@ using namespace std;
 is_vector::is_vector(double x, double y) : x_{x}, x_orig_{x}, 
 	y_{y}, y_orig_{y}{
 	// Assigning speed and direction randomly
-	srand(time(NULL));
-	speed_=rand()%11;
+	speed_=(rand()%180)/10;
 	// Generate direction by degrees and convert to radians
 	double deg=rand()%361;
 	direction_=(deg/180)*M_PI;
@@ -22,3 +21,4 @@ void is_vector::increment_position(){
 void is_vector::reset(){
 	x_=x_orig_; y_=y_orig_;
 }
+// stackoverflow.com/a/14638842 --> random nmbr gen flyttall

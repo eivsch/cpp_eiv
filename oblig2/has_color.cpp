@@ -1,32 +1,24 @@
 #include "has_color.hpp"
 #include <stdlib.h>
 #include <time.h>
+#include <iostream>
 
 using namespace std;
 
-has_color::has_color(bool Random){
-	// generate random rgb-number (0-255) and assign each part
-	if(Random){
-		srand(time(NULL));
-		*red_=rand()%256;
-		*green_=rand()%256;
-		*blue_=rand()%256;
-		// set corresponding value to color_
-		color_=fl_rgb_color(*red_,*green_,*blue_);
-	}else{
-		// initialize with default color
-		color_=FL_WHITE;
-		*red_=255; *green_=255; *blue_=255;
-	}
+// Color representation is RGBI (1 byte each), assigning each ColorPart to corresponding byte.
+has_color::has_color(bool Random) : red_{(unsigned char * ) &color_}, green_{((unsigned char * ) &color_) + 1}, 
+									blue_{((unsigned char * ) &color_) + 2} {
+	unsigned char* i=((unsigned char *)  &color_) + 3;
+	i=0x00;
+	if(Random)
+		color_ = rand(); // TODO: Hva med den fjerde biten? Skal den være null?
 }
-has_color::has_color(Color start) : color_{start}{
-	// give ColorParts dummy values
-	*red_=0; *green_=0; *blue_=0;
+has_color::has_color(Color start) : has_color{false} {
+	color_ = start;
 }
-has_color::has_color(ColorPart red, ColorPart green, ColorPart blue){
+has_color::has_color(ColorPart red, ColorPart green, ColorPart blue) : has_color{false}
+{
 	*red_=red; *green_=green; *blue_=blue;
-	// set corresponding value to color_
-	color_=fl_rgb_color(*red_,*green_,*blue_);
 }
 void has_color::darken_color(){
 	color_=fl_darker(color_);

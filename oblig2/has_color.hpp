@@ -11,7 +11,7 @@ class has_color{
   Color color_=FL_WHITE;
   ColorPart* red_;
   ColorPart* green_;
-  ColorPart* blue_; 
+  ColorPart* blue_;
 public:
   // Initialize with a random color if true, otherwise white
   has_color(bool Random=true);

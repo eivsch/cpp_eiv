@@ -14,8 +14,7 @@ animation_canvas::animation_canvas(const char *l, int w, int h) :
 {
 }
 void animation_canvas::timer(void* canvas){
-	Fl::repeat_timeout(1/fps, timer, canvas);
-	cout << "Timeout!" << endl;
+	Fl::repeat_timeout(1.0/fps, timer, canvas);
 	((Fl_Window*)canvas)->redraw();
 }
 void animation_canvas::add(animated* part){
