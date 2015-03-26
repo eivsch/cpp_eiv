@@ -28,14 +28,13 @@ rocket::rocket(int _dotcount,int dotsize, int _fuse, int x, int y) :
 		int color=fl_rgb_color(r,g,b);
 		for(int i=0; i<_dotcount; i++){
 			// Have slightly different colors for each dot
-			r+=rand()%56;
+			r+=rand()%56; 										 // TODO: Mer variasjon (g,b)
 			color=fl_rgb_color(r,g,b);
 			dots.push_back(new dot(x,y,dotsize,color));
 		}
 }
 rocket::rocket(int _dotcount,int dotsize, int _fuse, int x, int y, 
          AbstractDotFactory* dotFactory){
-
 }
 rocket::~rocket(){
 	
