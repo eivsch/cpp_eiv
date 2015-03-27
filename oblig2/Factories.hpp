@@ -4,34 +4,35 @@
 #include "dot.hpp"
 
 class AbstractDotFactory {
+public:
 	virtual dot* createDot(float _x, float _y, float _r)=0;
 };
 
-class NormalDotFactory : AbstractDotFactory{
+class NormalDotFactory : public AbstractDotFactory{
 public:
 	dot* createDot(float _x, float _y, float _r) override;
 };
 
-class BlinkingDotFactory : AbstractDotFactory{
+class BlinkingDotFactory : public AbstractDotFactory{
+public:
+	dot* createDot(float _x, float _y, float _r) override;
+	//~BlinkingDotFactory() override;
+};
+
+class TintedDotFactory : public AbstractDotFactory{
 public:
 	dot* createDot(float _x, float _y, float _r) override;
 };
 
-class TintedDotFactory : AbstractDotFactory{
+class MixedDotFactory : public AbstractDotFactory{
 public:
 	dot* createDot(float _x, float _y, float _r) override;
 };
 
-class MixedDotFactory : AbstractDotFactory{
-public:
-	dot* createDot(float _x, float _y, float _r) override;
-};
-
-class BlinkingDot : dot{
+class BlinkingDot : public dot{
 	int r, g, b;
 public:
 	BlinkingDot(float _x, float _y, float _r);
-	void dot::operator++() override;
 };
 
 #endif

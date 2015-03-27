@@ -1,6 +1,8 @@
 #include "dot.hpp"
 #include <FL/fl_draw.H>  // drawing
 
+#include <iostream>
+
 using namespace std;
 
 void dot::draw(){
@@ -12,6 +14,7 @@ dot::dot(float _x, float _y, float _r) : is_vector(_x, _y), r{_r}, has_color(tru
 dot::dot(float _x, float _y, float _r, Color c) : 
 	is_vector(_x,_y), r{_r}, has_color(c)
 {
+	cout << "Dotcolor: " << c << endl;
 }
 dot::~dot(){
 }

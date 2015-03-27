@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int counter=1000;
+int counter=1000;    						// TODO: bruke t i animated
 
 void rocket::operator++(){
 	if(fuse!=0) {
@@ -25,7 +25,7 @@ rocket::rocket(int _dotcount,int dotsize, int _fuse, int x, int y) :
 	dotcount{_dotcount}, fuse{_fuse}{
 		// Generate random, light colors
 		int r=(rand()%100)+100, g=rand()%50, b=rand()%80;        // TODO: ha g og b som x^2 funksjoner for større variasjoner
-		int color=fl_rgb_color(r,g,b);
+		unsigned int color=fl_rgb_color(r,g,b);
 		for(int i=0; i<_dotcount; i++){
 			// Have slightly different colors for each dot
 			r+=rand()%56; 										 // TODO: Mer variasjon (g,b)
@@ -36,6 +36,5 @@ rocket::rocket(int _dotcount,int dotsize, int _fuse, int x, int y) :
 rocket::rocket(int _dotcount,int dotsize, int _fuse, int x, int y, 
          AbstractDotFactory* dotFactory){
 }
-rocket::~rocket(){
-	
+rocket::~rocket(){	
 }
