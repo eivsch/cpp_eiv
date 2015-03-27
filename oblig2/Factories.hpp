@@ -16,7 +16,6 @@ public:
 class BlinkingDotFactory : public AbstractDotFactory{
 public:
 	dot* createDot(float _x, float _y, float _r) override;
-	//~BlinkingDotFactory() override;
 };
 
 class TintedDotFactory : public AbstractDotFactory{
@@ -30,9 +29,18 @@ public:
 };
 
 class BlinkingDot : public dot{
-	int r, g, b;
+	int blinker;
 public:
 	BlinkingDot(float _x, float _y, float _r);
+
+	// Override ++ operator to create the blinking effect
+	void operator++() override;
+};
+
+class TintedDot : public dot{
+	Color tint();
+public:
+	TintedDot(float _x, float _y, float _r);
 };
 
 #endif

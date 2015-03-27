@@ -7,7 +7,7 @@
 
 using namespace std;
 
-int animation_canvas::fps{10};
+int animation_canvas::fps{25};
 
 animation_canvas::animation_canvas(const char *l, int w, int h) :
 	Fl_Box(0,0,w,h,l)

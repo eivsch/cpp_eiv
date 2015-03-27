@@ -14,7 +14,7 @@ void rocket::operator++(){
 		for (auto d : dots){
 			++(*d);
 			// Dots will gradually fade out
-			if(counter%4==0)
+			if(counter%5==0)
 				d->darken_color();
 		}
 		counter--;
