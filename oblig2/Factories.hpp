@@ -38,6 +38,7 @@ public:
 };
 
 class TintedDot : public dot{
+	// Define and return tint
 	Color tint();
 public:
 	TintedDot(float _x, float _y, float _r);

@@ -11,7 +11,7 @@ dot* BlinkingDotFactory::createDot(float _x, float _y, float _r){
 }
 
 BlinkingDot::BlinkingDot(float _x, float _y, float _r) : blinker{0}, 
-	dot(_x, _y, _r, fl_rgb_color((rand()%56)+200,(rand()%56)+200,(rand()%56)+100))
+	dot(_x, _y, _r, fl_rgb_color((rand()%56)+200,(rand()%56)+200,(rand()%56)+100))		// White
 {
 }
 
@@ -29,7 +29,7 @@ void BlinkingDot::operator++(){
 
 /** Normal Dots */
 dot* NormalDotFactory::createDot(float _x, float _y, float _r){
-	int r=(rand()%26)+230, g=(rand()%150), b=rand()%150;
+	int r=(rand()%26)+230, g=(rand()%150), b=rand()%150;			// Orange
 	Color c=fl_rgb_color(r,g,b);
 	return new dot(_x, _y, _r, c);
 }
@@ -40,12 +40,11 @@ dot* TintedDotFactory::createDot(float _x, float _y, float _r){
 }
 
 Color TintedDot::tint(){
-	return fl_rgb_color(rand()%180,5,rand()%200);
+	return fl_rgb_color(rand()%180,5,rand()%200);	// Purple
 }
 
-// Create with purple tint
 TintedDot::TintedDot(float _x, float _y, float _r) : 
-	dot(_x, _y, _r, fl_rgb_color(rand()%180,5,rand()%200)){
+	dot(_x, _y, _r, tint()){
 }
 
 /** Mixed dots */
