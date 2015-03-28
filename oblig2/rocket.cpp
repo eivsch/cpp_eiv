@@ -3,13 +3,11 @@
 
 using namespace std;
 
-int counter=1000;    						// TODO: bruke t i animated
+int counter{0};
 
 void rocket::operator++(){
-	if(fuse!=0) {
+	if(fuse!=0)
 		fuse--;
-		cout << "Fuse: " << fuse << endl;
-	}
 	else {
 		for (auto d : dots){
 			++(*d);
@@ -18,18 +16,14 @@ void rocket::operator++(){
 				d->darken_color();
 			}
 		}
-		counter--;
+		counter++;
 	}
 }
 rocket::rocket(int _dotcount,int dotsize, int _fuse, int x, int y) : 
 	dotcount{_dotcount}, fuse{_fuse}{
-		// Generate random, light colors
-		int r=(rand()%26)+230, g=(rand()%150), b=rand()%150;        // TODO: ha g og b som x^2 funksjoner for større variasjoner
-		Color color=fl_rgb_color(r,g,b);
+		// Create each dot with random colors and add to container
 		for(int i=0; i<_dotcount; i++){
-			// Have slightly different colors for each dot
-			r+=rand()%56; 										 // TODO: Mer variasjon (g,b)
-			color=fl_rgb_color(r,g,b);
+			Color color=fl_rgb_color((rand()%26)+200,rand()%150,rand()%120);
 			dots.push_back(new dot(x,y,dotsize,color));
 		}
 }

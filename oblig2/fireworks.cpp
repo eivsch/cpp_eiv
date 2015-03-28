@@ -1,6 +1,5 @@
 #include "fireworks.hpp"
 #include "rocket.hpp"
-#include <iostream>
 
 using namespace std;
 

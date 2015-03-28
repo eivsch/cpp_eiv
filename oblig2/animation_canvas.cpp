@@ -1,8 +1,4 @@
 #include "animation_canvas.hpp"
-#include <iostream>
-#include <FL/Fl_Box.H>
-#include <FL/Fl.H>
-#include <FL/Fl_Window.H>
 #include <FL/fl_draw.H>
 
 using namespace std;
@@ -23,7 +19,9 @@ void animation_canvas::add(animated* part){
 animation_canvas::~animation_canvas(){
 }
 void animation_canvas::draw(){
+	increment();
+}
+void animation_canvas::increment(){
 	for(auto p : parts)
 		++(*p);
 }
-void animation_canvas::increment(){}

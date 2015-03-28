@@ -1,15 +1,13 @@
 #include "rocket.hpp"
 #include "Factories.hpp"
-#include <iostream>
-
 
 using namespace std;
 
-int counter=1000;
+int counter=0;
 
 void rocket::operator++(){
 	if(fuse!=0)
-		fuse--;
+		fuse--;	
 	else {
 		for (auto d : dots){
 			++(*d);
@@ -17,7 +15,7 @@ void rocket::operator++(){
 			if(counter%5==0)
 				d->darken_color();
 		}
-		counter--;
+		counter++;
 	}
 }
 rocket::rocket(int _dotcount,int dotsize, int _fuse, int x, int y){

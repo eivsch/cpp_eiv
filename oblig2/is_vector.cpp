@@ -1,6 +1,5 @@
 #include "is_vector.hpp"
 #include <stdlib.h>
-#include <time.h>
 
 using namespace std;
 

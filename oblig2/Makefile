@@ -14,6 +14,3 @@ fireworks2: classes
 
 classes:
 	$(GPP) $(GPPOPT) -c has_color.cpp is_vector.cpp dot.cpp rocket.cpp rocket2.cpp animation_canvas.cpp fireworks.cpp fireworks2.cpp Factories.cpp $(FLTK)
-
-
-#g++ -std=c++11 main.cpp has_color.o is_vector.o animated.o dot.o rocket.o animation_canvas.o fireworks.o -o fireworks_TEST -L/usr/local/lib -lfltk -lXfixes -lXext -lpthread -ldl -lm -lX11

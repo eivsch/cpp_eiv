@@ -1,7 +1,4 @@
 #include "has_color.hpp"
-#include <stdlib.h>
-#include <time.h>
-#include <iostream>
 
 using namespace std;
 
@@ -9,7 +6,7 @@ using namespace std;
 has_color::has_color(bool Random) : red_{(unsigned char * ) &color_}, green_{((unsigned char * ) &color_) + 1}, 
 									blue_{((unsigned char * ) &color_) + 2} {
 	if(Random)
-		color_ = rand(); // TODO: Hva med den fjerde biten? Skal den være null?
+		color_ = rand();
 }
 has_color::has_color(Color start) : has_color{false} {
 	color_ = start;
