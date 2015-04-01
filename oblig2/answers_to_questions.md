@@ -1,4 +1,8 @@
-1. Protected datamedlem vil si at alle subklasser av animated har direkte tilgang til datafeltet.
+Oppgaver
+========
+
+##1. 
+   Protected datamedlem vil si at alle subklasser av animated har direkte tilgang til datafeltet.
    Fordelen er altså at det er enkelt for subklassene å gjøre endringer/lese dataene, noe som jo
    ofte er hensiktsmessig i en subklasse. Ulempen er tap av kontroll, da baseklassen ikke lenger 
    har full kontroll over sitt eget datafelt. Dersom det f.eks er svært mange klasser som arver
