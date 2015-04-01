@@ -11,7 +11,7 @@ int main(int argc, char** argv){
 	const int screen_width=Fl::w(), screen_height=Fl::h();
 	Fl_Window* window=new Fl_Window(screen_width,screen_height,"Fireworks!");
 
-	fireworks* f=new fireworks("F2",screen_width,screen_height,12);
+	fireworks* f=new fireworks("",screen_width,screen_height,12);
 
 	animation_canvas::timer(window);
 	

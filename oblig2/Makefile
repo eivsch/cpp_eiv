@@ -14,3 +14,6 @@ fireworks2: classes
 
 classes:
 	$(GPP) $(GPPOPT) -c has_color.cpp is_vector.cpp dot.cpp rocket.cpp rocket2.cpp animation_canvas.cpp fireworks.cpp fireworks2.cpp Factories.cpp $(FLTK)
+
+clean:
+	rm *.o

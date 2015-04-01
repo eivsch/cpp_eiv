@@ -9,7 +9,7 @@ fireworks::fireworks(const char* title,int w, int h, int _rocketcount)
 	int fuse, x, y;
 	for(int i=0;i<rocketcount;i++){
 		// Generate random numbers for rocket position and fuse
-		fuse=rand()%250; x=(Fl::w()/2)+(rand()%800)-400; y=(Fl::h()/2)+(rand()%300)-150;
+		fuse=rand()%250; x=(w/2)+(rand()%800)-400; y=(h/2)+(rand()%300)-150;
 		animation_canvas::add(new rocket(200,4,fuse,x,y));
 	}
 }
