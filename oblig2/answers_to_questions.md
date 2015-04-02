@@ -36,8 +36,12 @@ Oppgaver
 
 5. Programmet og designen fungerer stort sett fint i forhold til hva som var intensjonen og målet
    med programmet. Det kan sikkert riktignok alltid gjøres mer 'clean' og gjenbrukbart, jmf. tidligere
-   oppgaver, f.eks kunne det sikkert vært enda mer generisk slik at man kunne tenget opp/animert flere
-   typer objekter samtidig enn bare raketter (dots) og fått god ytelse. En annen som kan nevnes er 
-   klassen is_vector som kun gir en tilfeldig retning og fart til vektorene, den kunne vært utvidet
-   slik at man selv kan sende med retning og fart for å få de grafiske elementene til å bevege seg
-   i andre mønstre. 
+   oppgaver, f.eks kunne det sikkert vært enda mer generisk slik at man kunne tegnet opp flere objekter
+   enn bare de som arver 'animated'.
+   En annen  ting som kan nevnes er klassen is_vector som kun gir en tilfeldig retning og fart til 
+   vektorene, den kunne vært utvidet slik at man selv kan sende med retning og fart for å få de 
+   grafiske elementene til å bevege seg i andre mønstre. 
+   I tillegg kunne kanskje klassen 'dot' vært utvidet med en konstruktør som tar
+   RGB-verdier, i og med at 'has_color' har det. Har brukt FLTK-funksjonen fl_rgb_color() ganske ofte for 
+   å konvertere tre RGB-verdier til en 'Color' og kunne sånn sett sluppet det for renere kode. Kunne
+   også f.eks vurdert om det skal være mulig å skifte farge underveis (set-metode for ColorPart i has_color).
